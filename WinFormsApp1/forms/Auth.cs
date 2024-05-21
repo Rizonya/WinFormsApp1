@@ -21,7 +21,7 @@ namespace WinFormsApp1
                 if (user != null)
                 {
                     MessageBox.Show("Добро пожаловать, " + username);
-                    Choose c = new Choose();
+                    menu c = new menu();
                     c.Show();
                     this.Hide();
                 }

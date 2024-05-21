@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace WinFormsApp1;
+namespace WinFormsApp1.Models;
 
 public partial class Заказы
 {
-    public int? Id { get; set; }
+    public int Id { get; set; }
 
     public int? ВидУслуги { get; set; }
 
@@ -19,7 +19,7 @@ public partial class Заказы
 
     public int? Площадь { get; set; }
 
-    public decimal? Цена { get; set; }
+    public int? Цена { get; set; }
 
-    public virtual Услуги? ВидУслугиNavigation { get; set; }
+    public string? ВыполненоИлиНет { get; set; }
 }

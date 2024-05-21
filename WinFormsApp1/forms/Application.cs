@@ -37,15 +37,20 @@ namespace WinFormsApp1.forms
             // Объединяем дату и время
             DateTime dateTime = date.Add(time.TimeOfDay);
             Заказчики client = new Заказчики();
-            Заказы order = new Заказы();
-            order.Заказчик = Nametb.Text;
-            order.Дата = date;
-            order.Время = time;
-            order.ВидУслуги = Storage.selectedService.Id;
-            order.Адрес = Addresstb.Text;
-            order.Площадь = Storage.Area;
-            order.Цена = (Storage.Area >= 20 ? Storage.Area : 20) * Storage.selectedService.ЦенаЗаКвМ;
-            DialogResult result = MessageBox.Show($"Выбранная услуга: {order.ВидУслугиNavigation}\n" +
+            //создаем новый объект класса Заказы
+            Заказы order = new Заказы
+            {
+                Id = context.Заказыs.OrderBy(e=>e.Id).Last().Id+1,
+                Заказчик = Nametb.Text,
+                Дата = date,
+                Время = time,
+                ВидУслуги = Storage.selectedService.Id,
+                Адрес = Addresstb.Text,
+                Площадь = Storage.Area,
+                Цена = (Storage.Area >= 20 ? Storage.Area : 20) * Storage.selectedService.ЦенаЗаКвМ
+            };
+            //получаем подтверждение данных от пользователя
+            DialogResult result = MessageBox.Show($"Выбранная услуга: {context.Услугиs.First(e=>e.Id==order.ВидУслуги)}\n" +
                 $"Введенная площадь помещения: {order.Площадь}\n" +
                 $"Дата: {order.Дата.Value.ToString("yyyy-MM-dd")}\n" +
                 $"Время: {order.Время.Value.TimeOfDay}\n Адрес: {order.Адрес}\n" +
@@ -54,14 +59,15 @@ namespace WinFormsApp1.forms
                 $"Адрес: {order.Адрес}", "Подтверждение", MessageBoxButtons.OKCancel);
             if (result == DialogResult.OK)
             {
+                //добавляем данные в базу
                 context.Заказыs.Add(order);
                 context.SaveChanges();
+                MessageBox.Show("Заявка успешно сохранена");
             }
             
         }
         private void Application_FormClosed(object sender, FormClosedEventArgs e)
         {
-            System.Windows.Forms.Application.Exit();
         }
     }
 }

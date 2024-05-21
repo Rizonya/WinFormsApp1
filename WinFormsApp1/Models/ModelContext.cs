@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace WinFormsApp1;
+namespace WinFormsApp1.Models;
 
 public partial class ModelContext : DbContext
 {
@@ -27,7 +27,7 @@ public partial class ModelContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseJet("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=mamaudali.accdb;");
+        => optionsBuilder.UseJet("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=mamaudali.accdb");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -63,20 +63,16 @@ public partial class ModelContext : DbContext
             entity.HasIndex(e => e.Id, "id").IsUnique();
 
             entity.Property(e => e.Id)
-                .HasColumnType("counter")
+                .ValueGeneratedNever()
                 .HasColumnName("id");
             entity.Property(e => e.Адрес).HasMaxLength(255);
             entity.Property(e => e.ВидУслуги).HasColumnName("Вид услуги");
+            entity.Property(e => e.ВыполненоИлиНет)
+                .HasDefaultValueSql("No")
+                .HasColumnName("Выполнено или нет");
             entity.Property(e => e.Заказчик).HasMaxLength(255);
             entity.Property(e => e.Площадь).HasDefaultValueSql("0");
-            entity.Property(e => e.Цена)
-                .HasDefaultValueSql("0")
-                .HasColumnType("currency");
-
-            entity.HasOne(d => d.ВидУслугиNavigation).WithMany(p => p.Заказыs)
-                .HasForeignKey(d => d.ВидУслуги)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("УслугиЗаказы");
+            entity.Property(e => e.Цена).HasDefaultValueSql("0");
         });
 
         modelBuilder.Entity<Специалисты>(entity =>
@@ -103,12 +99,11 @@ public partial class ModelContext : DbContext
             entity.HasIndex(e => e.ВидУслуги, "УслугиВид услуги");
 
             entity.Property(e => e.Id)
-                .HasColumnType("counter")
+                .ValueGeneratedNever()
                 .HasColumnName("id");
             entity.Property(e => e.ВидУслуги).HasColumnName("Вид услуги");
             entity.Property(e => e.ЦенаЗаКвМ)
                 .HasDefaultValueSql("0")
-                .HasColumnType("currency")
                 .HasColumnName("Цена за кв м");
         });
 

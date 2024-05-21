@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace WinFormsApp1;
+namespace WinFormsApp1.Models;
 
 public partial class Услуги
 {
     public string? ВидУслуги { get; set; }
 
-    public decimal? ЦенаЗаКвМ { get; set; }
+    public int? ЦенаЗаКвМ { get; set; }
 
-    public int? Id { get; set; }
-
-    public virtual ICollection<Заказы> Заказыs { get; set; } = new List<Заказы>();
+    public int Id { get; set; }
 
     public override string ToString()
     {
